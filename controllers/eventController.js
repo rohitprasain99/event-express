@@ -1,13 +1,11 @@
 async function getEvents(req, res, next) {
   try {
-    await res.json([
-      {
-        id: 1,
-        name: "first event",
-      },
-    ]);
+    const data = [{ id: 1, name: "first event" }];
+    // throw new Error("failed");
+    await res.status(200).json(data, "Event fetched successfully");
   } catch (error) {
-    console.error("Errror while fetching events", error.message);
+    console.error("Error while fetching events", error.message);
+    res.status(500).json({ devMessage: error.message }, "Could not get events");
     next();
   }
 }

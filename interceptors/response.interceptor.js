@@ -1,13 +1,17 @@
 function responseMiddleware(req, res, next) {
-  const originalJson = res.json;
+  // save original JSON
+  const originalJSON = res.json;
 
-  res.json = function (body) {
-    const output = {
-      status: 200,
+  // override res.json
+  res.json = function (body, message) {
+    const formatter = {
+      status: res.statusCode,
+      message: message,
       data: body,
     };
 
-    return originalJson.call(this, output);
+    // return original JSON with modified attributes
+    return originalJSON.call(this, formatter);
   };
 
   next();
